@@ -5,7 +5,7 @@ from .serializers import ProductSerializer
 from .models import Product
 from products import serializers
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'DELETE'])
 def products_list(request):
     if request.method == 'GET':
         products = Product.objects.all()
@@ -18,6 +18,9 @@ def products_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        products.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)        
 
 
 @api_view(['GET'])
